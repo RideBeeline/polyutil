@@ -1,0 +1,30 @@
+{
+  "name": "polyutil",
+  "version": "1.0.0",
+  "description": "Polyline simplification utitily ported from Google Android Map utils",
+  "main": "lib/index.js",
+  "scripts": {
+    "prepare": "./node_modules/typescript/bin/tsc --outFile lib/index.js src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RideBeeline/polyutil.git"
+  },
+  "keywords": [
+    "javascript",
+    "polyline",
+    "simplify",
+    "google",
+    "maps"
+  ],
+  "author": "Chetan Padia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RideBeeline/polyutil/issues"
+  },
+  "homepage": "https://github.com/RideBeeline/polyutil#readme",
+  "devDependencies": {
+    "typescript": "^2.6.2"
+  }
+}
