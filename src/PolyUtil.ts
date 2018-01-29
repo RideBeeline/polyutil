@@ -55,6 +55,77 @@ export function distanceToLine(p: LatLng, start: LatLng, end: LatLng): number {
 }
 
 /**
+ * Decodes an encoded path string into a sequence of LatLngs.
+ */
+export function decode(encodedPath: string): LatLng[] {
+  const len = encodedPath.length
+
+  const path: LatLng[] = []
+  let index = 0
+  let lat = 0
+  let lng = 0
+
+  while (index < len) {
+    let result = 1
+    let shift = 0
+    let b: number
+    do {
+      b = encodedPath.charCodeAt(index++) - 63 - 1
+      result += b << shift
+      shift += 5
+    } while (b >= 0x1f)
+    lat += (result & 1) != 0 ? ~(result >> 1) : (result >> 1)
+
+    result = 1
+    shift = 0
+    do {
+      b = encodedPath.charCodeAt(index++) - 63 - 1
+      result += b << shift
+      shift += 5
+    } while (b >= 0x1f)
+    lng += (result & 1) != 0 ? ~(result >> 1) : (result >> 1)
+
+    path.push({latitude: lat * 1e-5, longitude: lng * 1e-5})
+  }
+
+  return path
+}
+
+/**
+ * Encodes a sequence of LatLngs into an encoded path string.
+ */
+export function encode(path: LatLng[]): string {
+  function encode(v: number, result: Buffer[]) {
+    v = v < 0 ? ~(v << 1) : v << 1
+    while (v >= 0x20) {
+      result.push(Buffer.from(String.fromCodePoint((0x20 | (v & 0x1f)) + 63)))
+      v >>= 5
+    }
+    result.push(Buffer.from(String.fromCodePoint(v + 63)))
+  }
+
+  let lastLat = 0
+  let lastLng = 0
+
+  const result: Buffer[] = []
+
+  path.forEach(point => {
+    const lat = Math.round(point.latitude * 1e5)
+    const lng = Math.round(point.longitude * 1e5)
+
+    const dLat = lat - lastLat
+    const dLng = lng - lastLng
+
+    encode(dLat, result)
+    encode(dLng, result)
+
+    lastLat = lat
+    lastLng = lng
+  })
+  return Buffer.concat(result).toString()
+}
+
+/**
  * Simplifies the given poly (polyline or polygon) using the Douglas-Peucker decimation
  * algorithm.  Increasing the tolerance will result in fewer points in the simplified polyline
  * or polygon.

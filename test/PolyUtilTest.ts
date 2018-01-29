@@ -82,38 +82,7 @@ function assertInputUnchanged(afterInput: LatLng[], beforeInput: LatLng[]) {
 
 describe('polyutil', () => {
 
-  describe('isClosedPolygon', () => {
-
-    it('detects closed polygon', () => {
-      const poly = [
-        {latitude: 28.06025, longitude: -82.41030},
-        {latitude: 28.06129, longitude: -82.40945},
-        {latitude: 28.06206, longitude: -82.40917},
-        {latitude: 28.06125, longitude: -82.40850},
-        {latitude: 28.06035, longitude: -82.40834}
-      ]
-
-      assert.equal(false, PolyUtil.isClosedPolygon(poly))
-
-      // Add the closing point that's same as the first
-      poly.push({latitude: 28.06025, longitude: -82.41030})
-      assert.equal(true, PolyUtil.isClosedPolygon(poly))
-    })
-
-  })
-
-  describe('distanceToLine', () => {
-
-    it('computes distance to line', () => {
-      const startLine = {latitude: 28.05359, longitude: -82.41632}
-      const endLine = {latitude: 28.05310, longitude: -82.41634}
-      const p = {latitude: 28.05342, longitude: -82.41594}
-
-      const distance = PolyUtil.distanceToLine(p, startLine, endLine)
-      expectNearNumber(42.989894, distance, 1e-6)
-    })
-
-  })
+  const TEST_LINE = '_cqeFf~cjVf@p@fA}AtAoB`ArAx@hA`GbIvDiFv@gAh@t@X\\|@z@`@Z\\Xf@Vf@VpA\\tATJ@NBBkC'
 
   describe('simplify', () => {
 
@@ -257,6 +226,64 @@ describe('polyutil', () => {
         assertInputUnchanged(oval, copy)
       })
 
+    })
+
+  })
+
+  describe('isClosedPolygon', () => {
+
+    it('detects closed polygon', () => {
+      const poly = [
+        {latitude: 28.06025, longitude: -82.41030},
+        {latitude: 28.06129, longitude: -82.40945},
+        {latitude: 28.06206, longitude: -82.40917},
+        {latitude: 28.06125, longitude: -82.40850},
+        {latitude: 28.06035, longitude: -82.40834}
+      ]
+
+      assert.equal(false, PolyUtil.isClosedPolygon(poly))
+
+      // Add the closing point that's same as the first
+      poly.push({latitude: 28.06025, longitude: -82.41030})
+      assert.equal(true, PolyUtil.isClosedPolygon(poly))
+    })
+
+  })
+
+  describe('distanceToLine', () => {
+
+    it('computes distance to line', () => {
+      const startLine = {latitude: 28.05359, longitude: -82.41632}
+      const endLine = {latitude: 28.05310, longitude: -82.41634}
+      const p = {latitude: 28.05342, longitude: -82.41594}
+
+      const distance = PolyUtil.distanceToLine(p, startLine, endLine)
+      expectNearNumber(42.989894, distance, 1e-6)
+    })
+
+  })
+
+  describe('decode', () => {
+
+    it('decodes polyline strings', () => {
+      const latLngs = PolyUtil.decode(TEST_LINE)
+
+      const expectedLength = 21
+      assert.equal(expectedLength, latLngs.length, 'Wrong length.')
+
+      const lastPoint = latLngs[expectedLength - 1]
+      expectNearNumber(37.76953, lastPoint.latitude, 1e-6)
+      expectNearNumber(-122.41488, lastPoint.longitude, 1e-6)
+    })
+
+  })
+
+  describe('encode', () => {
+
+    it('encodes polyline strings', () => {
+      const path = PolyUtil.decode(TEST_LINE)
+      const encoded = PolyUtil.encode(path)
+      assert.equal(TEST_LINE, encoded)
     })
 
   })
