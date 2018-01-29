@@ -1,0 +1,13 @@
+language: node_js
+node_js: node
+
+before_deploy:
+  - npm version patch
+  - git push --tags
+
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  api_key: $NPM_TOKEN
+  on:
+    branch: master
