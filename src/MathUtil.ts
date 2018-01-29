@@ -3,6 +3,8 @@
  * unless otherwise specified
  */
 
+export const EARTH_RADIUS = 6371009
+
 /**
  * java.lang.Math.toRadians
  */

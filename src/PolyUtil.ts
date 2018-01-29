@@ -2,9 +2,9 @@
  * Ported from https://github.com/googlemaps/android-maps-utils/blob/70cbb346e74eee8531a06d90521886eeef82efab/library/src/com/google/maps/android/PolyUtil.java
  */
 
-import { LatLng, isEqual } from './latlng'
-import { toRadians } from './math'
-import { computeDistanceBetween } from './sphericalutil'
+import { LatLng, isEqual } from './LatLng'
+import { toRadians } from './MathUtil'
+import { computeDistanceBetween } from './SphericalUtil'
 
 /**
  * Returns true if the provided list of points is a closed polygon (i.e., the first and last
@@ -13,12 +13,11 @@ import { computeDistanceBetween } from './sphericalutil'
  * @return true if the provided list of points is a closed polygon (i.e., the first and last
  * points are the same), and false if it is not
  */
-function isClosedPolygon(poly: LatLng[]) {
+export function isClosedPolygon(poly: LatLng[]) {
   const firstPoint = poly[0]
   const lastPoint = poly[poly.length-1]
   return isEqual(firstPoint, lastPoint)
 }
-
 
 /**
  * Computes the distance on the sphere between the point p and the line segment start to end.
@@ -28,7 +27,7 @@ function isClosedPolygon(poly: LatLng[]) {
  * @param end the end of the line segment
  * @return the distance in meters (assuming spherical earth)
  */
-function distanceToLine(p: LatLng, start: LatLng, end: LatLng): number {
+export function distanceToLine(p: LatLng, start: LatLng, end: LatLng): number {
   if (isEqual(start, end)) {
       return computeDistanceBetween(end, p)
   }
@@ -135,5 +134,5 @@ export function simplify(poly: LatLng[], tolerance: number): LatLng[] {
   }
 
   // Generate the simplified line
-  return poly.filter((l, idx) => dists[idx] != 0)
+  return poly.filter((l, idx) => dists[idx])
 }

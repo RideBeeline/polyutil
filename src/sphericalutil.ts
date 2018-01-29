@@ -2,10 +2,8 @@
  * Ported from https://github.com/googlemaps/android-maps-utils/blob/70cbb346e74eee8531a06d90521886eeef82efab/library/src/com/google/maps/android/SphericalUtil.java
  */
 
-import { arcHav, toRadians } from './math'
-import { LatLng } from './latlng'
-
-const EARTH_RADIUS = 6371009
+import { arcHav, toRadians, EARTH_RADIUS } from './MathUtil'
+import { LatLng } from './LatLng'
 
 /**
  * Returns haversine(angle-in-radians).
@@ -44,4 +42,25 @@ function computeAngleBetween(from: LatLng, to: LatLng): number {
  */
 export function computeDistanceBetween(from: LatLng, to: LatLng): number {
   return computeAngleBetween(from, to) * EARTH_RADIUS
+}
+
+/**
+ * Returns the length of the given path, in meters, on Earth.
+ */
+export function computeLength(path: LatLng[]): number {
+  if (path.length < 2) {
+    return 0
+  }
+  let length = 0
+  const prev = path[0]
+  let prevLat = toRadians(prev.latitude)
+  let prevLng = toRadians(prev.longitude)
+  path.forEach(point => {
+    const lat = toRadians(point.latitude)
+    const lng = toRadians(point.longitude)
+    length += distanceRadians(prevLat, prevLng, lat, lng)
+    prevLat = lat
+    prevLng = lng
+  })
+  return length * EARTH_RADIUS
 }
