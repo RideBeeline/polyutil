@@ -1,28 +1,28 @@
-# google-maps-polyutils
+# google-maps-polyutil
 
 [![Build Status](https://travis-ci.org/RideBeeline/polyutil.svg?branch=master)](https://travis-ci.org/RideBeeline/polyutil)
 
 
-Google Maps PolyUtils utils, and its tests, ported [from Java](https://github.com/googlemaps/android-maps-utils/blob/master/library/src/com/google/maps/android/PolyUtil.java).
+Google Maps PolyUtil utils, and its tests, ported [from Java](https://github.com/googlemaps/android-maps-utils/blob/master/library/src/com/google/maps/android/PolyUtil.java).
 
 ## Installation
 
 ```shell
-npm install --save google-maps-polyutils
+npm install --save google-maps-polyutil
 ```
 
 ## Usage
 
 ```javacsript
-var polyutils = require('google-maps-polyutils')
+var polyutil = require('google-maps-polyutil')
 var locations = [{latitude: 51, longitude: 0}, {latitude: 51, longitude: 0}, {latitude: 52, longitude: 0}, {latitude: 52, longitude: 0}]
 
 // Simplification
-val simplifiedLocations = polyutils.simplify(locations)
+var simplifiedLocations = polyutil.simplify(locations)
 
 // Encode to string
 var polyline = polyline.encode(simplifiedLocations)
 
 // Decode from string
-val decodedLocations = polyutils.decode(polyline)
+var decodedLocations = polyutil.decode(polyline)
 ```
