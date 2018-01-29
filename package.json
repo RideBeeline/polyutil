@@ -1,5 +1,5 @@
 {
-  "name": "polyutil",
+  "name": "google-maps-polyutil",
   "version": "1.0.0",
   "description": "Polyline simplification utitily ported from Google Android Map utils",
   "main": "lib/PolyUtil.js",
